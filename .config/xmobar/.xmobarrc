@@ -1,0 +1,41 @@
+-- http://projects.haskell.org/xmobar/
+-- I use Font Awesome 5 fonts in this config for unicode "icons".  On Arch Linux,
+-- install this package from the AUR to get these fonts: otf-font-awesome-5-free
+
+Config { font    = "xft:IBM Plex Sans:weight=bold:pixelsize=12:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
+                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+                           ]
+       , bgColor = "#3c3836" -- gruvbox bg1
+       , fgColor = "#ebdbb2" -- gruvbox fg
+       , position = Top
+       , lowerOnStart = False
+       , hideOnStart = False
+       , allDesktops = True
+       , persistent = True
+       , overrideRedirect = True
+       , iconRoot = "/home/cs/.xmonad/xpm/"  -- default: "."
+       , commands = [
+                    -- Time and date
+                      Run Date "<fn=2>\xf017</fn>  %b %d %Y - (%H:%M) " "date" 50
+                      -- Network up and down
+                    , Run Network "wlp0s20u4" ["-t", "<fn=2>\xf0ab</fn>  <rx>kb  <fn=2>\xf0aa</fn>  <tx>kb"] 20
+                      -- Cpu usage in percent
+                    , Run Cpu ["-t", "<fn=2>\xf108</fn>  cpu: (<total>%)","-H","50","--high","red"] 20
+                      -- Ram used number and percent
+                    , Run Memory ["-t", "<fn=2>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20
+                      -- Disk space free
+                    , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
+                      -- Runs custom script to check for pacman updates.
+                      -- This script is in my dotfiles repo in .local/bin.
+                    , Run Com "/home/cs/.local/bin/pacupdate" [] "pacupdate" 36000
+                      -- Runs a standard shell command 'uname -r' to get kernel version
+                    , Run Com "uname" ["-r"] "" 3600
+		    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "    <icon=haskell_20.xpm/> <fc=#665c54>|</fc> %StdinReader% }{ <fc=#928374><fn=3></fn>  <action=`alacritty -e htop`>%uname%</action> </fc> <fc=#665c54>|</fc>  <fc=#fabd2f> <action=`alacritty -e htop`>%cpu%</action> </fc> <fc=#665c54>|</fc>  <fc=#fb4934> <action=`alacritty -e htop`>%memory%</action> </fc> <fc=#665c54>|</fc>  <fc=#83a598> <action=`alacritty -e htop`>%disku%</action> </fc> <fc=#665c54>|</fc>  <fc=#bebb26> <action=`alacritty -e sudo iftop`>%wlp0s20u4%</action> </fc> <fc=#665c54>|</fc>   <fc=#d3869b><fn=2></fn>  <action=`alacritty -e sudo pacman -Syu`>%pacupdate%</action> </fc> <fc=#665c54>|</fc>  <fc=#8ec07c> %date% </fc>  "
+       }
+
