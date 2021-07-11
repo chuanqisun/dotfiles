@@ -151,7 +151,7 @@ main = do
 	, ("M-S-q", io (exitWith ExitSuccess)) -- Quite XMonad
 	, ("M-r", spawn "xmonad --recompile; xmonad --restart") -- Restart Xmonad
 
-	, ("M-<Space>", sendMessage NextLayout) -- Apply next layout
+	, ("M-f", sendMessage NextLayout) -- Apply next layout (effective toggle full screen mode)
 
 	, ("M-l", moveTo Next NonEmptyWS) -- move to next workspace
 	, ("M-S-l", shiftToNext >> nextWS) -- follow to next workspace
