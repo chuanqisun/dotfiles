@@ -2,20 +2,28 @@
 import XMonad
 import Data.Monoid
 import System.Exit
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
-import XMonad.Util.Run
-import XMonad.Util.SpawnOnce
-import XMonad.Layout.Spacing
-import XMonad.Actions.WorkspaceNames
-import XMonad.Actions.GroupNavigation
-import XMonad.Util.EZConfig (mkKeymap)
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
+
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.Spacing
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Renamed
+import XMonad.Layout.NoBorders
+
+import XMonad.Actions.WorkspaceNames
+import XMonad.Actions.GroupNavigation
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SwapPromote
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
+
+import XMonad.Util.Run
+import XMonad.Util.SpawnOnce
+import XMonad.Util.EZConfig (mkKeymap)
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
@@ -68,7 +76,7 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| Full)
+myLayout = avoidStruts $ smartBorders $ (tiled ||| Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled = renamed [Replace "master/stack"]
@@ -94,7 +102,8 @@ myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+		, isFullscreen --> doFullFloat]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -105,7 +114,7 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+myEventHook = fullscreenEventHook
 
 ------------------------------------------------------------------------
 -- Status bars and logging
