@@ -34,7 +34,7 @@ myFocusFollowsMouse = False
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 myBorderWidth   = 5
-myModMask       = mod4Mask
+myModMask       = mod1Mask
 myWorkspaces    = ["1","2","3"]
 myNormalBorderColor  = "#504945" -- gruvbox bg2
 myFocusedBorderColor = "#fe8019" -- gruvbox organge
