@@ -10,6 +10,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'romgrk/barbar.nvim'
 call plug#end()
