@@ -21,6 +21,8 @@ set relativenumber " smart relative number
 set autoindent
 set clipboard=unnamedplus " System clipboard integration
 
+set hidden " Allow modified buffer to be hidden
+
 set ignorecase
 set smartcase " Case sentitive when there is upper case character. Override with \C or \c
 
