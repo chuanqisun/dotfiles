@@ -1,3 +1,3 @@
 nnoremap <silent><C-k><C-w> :BufferCloseAllButCurrent<CR>
-nnoremap <silent><C-k>, :BufferPrevious<CR>
-nnoremap <silent><C-k>. :BufferNext<CR>
+nnoremap <silent><S-Tab> :BufferPrevious<CR>
+nnoremap <silent><Tab> :BufferNext<CR>
