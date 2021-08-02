@@ -39,5 +39,5 @@ set mouse+=a " Mouse interaction in all modes
 
 " --- Styles
 set termguicolors
-colorscheme gruvbox " Requires `morhetz/gruvbox` plugin
+colorscheme gruvbox " Requires `gruvbox-community/gruvbox` plugin
 
