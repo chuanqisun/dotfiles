@@ -9,6 +9,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'hoob3rt/lualine.nvim'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " --- Vim features ---
@@ -32,5 +33,4 @@ set guicursor+=i:blinkon100
 " --- Styles
 set termguicolors
 colorscheme gruvbox " Requires `morhetz/gruvbox` plugin
-highlight clear SignColumn
 
