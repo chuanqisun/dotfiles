@@ -2,6 +2,11 @@
 local status, lualine = pcall(require, "lualine")
 if (not status) then return end
 
-
-local lualine = require 'lualine'
-lualine.setup()
+require'lualine'.setup {
+  sections = {
+    lualine_x = {
+			{ "diagnostics", sources = {"nvim_lsp"}},
+			'filetype'
+		},
+  },
+}

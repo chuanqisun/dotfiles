@@ -10,6 +10,8 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'airblade/vim-gitgutter'
+Plug 'nvim-lua/lsp-status.nvim'
+Plug 'romgrk/barbar.nvim'
 call plug#end()
 
 " --- Vim features ---
@@ -29,6 +31,8 @@ set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon100
+
+set mouse+=a " Mouse interaction in all modes
 
 " --- Styles
 set termguicolors
