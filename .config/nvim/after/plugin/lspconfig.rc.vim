@@ -2,7 +2,7 @@ if !exists('g:lspconfig') | finish | endif
 
 lua << EOF
 
--- Typescript LSP
+-- LSP
 local nvim_lsp = require('lspconfig')
 
 local on_attach = function(client, bufnr)
@@ -15,10 +15,15 @@ local on_attach = function(client, bufnr)
 
 	-- Completion
 	require'completion'.on_attach(client, bufnr)
+
 end
 
-nvim_lsp.tsserver.setup {
-	on_attach = on_attach
-}
+-- Typescript lang
+nvim_lsp.tsserver.setup { on_attach = on_attach }
+
+-- Rust lang
+nvim_lsp.rust_analyzer.setup({ 
+	on_attach=on_attach
+})
 
 EOF
