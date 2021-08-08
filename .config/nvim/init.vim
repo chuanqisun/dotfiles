@@ -13,6 +13,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'romgrk/barbar.nvim'
+
+" Language specific
+Plug 'cespare/vim-toml' " toml
 call plug#end()
 
 " --- Vim features ---
