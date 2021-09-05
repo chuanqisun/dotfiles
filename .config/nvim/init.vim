@@ -41,6 +41,7 @@ set smartcase " Case sentitive when there is upper case character. Override with
 
 set tabstop=2
 set shiftwidth=2 
+set expandtab
 
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver100-iCursor
