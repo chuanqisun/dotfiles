@@ -1,17 +1,15 @@
 " --- Plugins ---
 call plug#begin()
 Plug 'neovim/nvim-lspconfig'
-Plug 'glepnir/lspsaga.nvim'
 Plug 'nvim-lua/completion-nvim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope.nvim' " requires popup and plenary
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'nvim-lua/lsp-status.nvim'
 Plug 'romgrk/barbar.nvim' " requires nvim-web-devicons
 Plug 'kyazdani42/nvim-tree.lua' " requires nvim-web-devicons
 Plug 'prettier/vim-prettier' 
@@ -50,6 +48,12 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon100
 
 set mouse+=a " Mouse interaction in all modes
+
+
+" --- Global keymapping
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
 
 " --- Styles
 set termguicolors
