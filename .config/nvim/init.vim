@@ -29,6 +29,11 @@ set guicursor+=i:blinkon100
 set mouse+=a " Mouse interaction in all modes
 
 
+" --- File tree customization
+let g:netrw_liststyle = 3
+let g:netrw_keepdir = 0
+
+
 " --- Global keymapping
 nnoremap <SPACE> <Nop>
 let mapleader=" "
