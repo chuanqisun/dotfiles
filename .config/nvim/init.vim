@@ -1,29 +1,7 @@
 " --- Plugins ---
 call plug#begin()
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
 Plug 'gruvbox-community/gruvbox'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim' " requires popup and plenary
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'hoob3rt/lualine.nvim'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'romgrk/barbar.nvim' " requires nvim-web-devicons
-Plug 'kyazdani42/nvim-tree.lua' " requires nvim-web-devicons
 Plug 'prettier/vim-prettier' 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Plugin author recommend updating the parsers on update
-Plug 'tpope/vim-commentary' 
-Plug 'JoosepAlviste/nvim-ts-context-commentstring' " Uses tpope/vim-commentary
-
-
-" Language specific
-Plug 'cespare/vim-toml' " toml
-
-"Plug 'pangloss/vim-javascript' " javascript
-"Plug 'leafgarland/typescript-vim' " typescript
-Plug 'jonsmithers/vim-html-template-literals' " javascript/typescript
 call plug#end()
 
 " --- Vim features ---
