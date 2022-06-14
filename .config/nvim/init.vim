@@ -38,6 +38,17 @@ let g:netrw_keepdir = 0
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
+" leader + p: list buffers 
+nnoremap <leader>p :buffers<CR>:buffer<Space>
+" leader + e: open file tree
+nnoremap <leader>e :e .<CR> 
+" leader + h/l focus tab
+nnoremap <leader>h :tabprevious<CR>
+nnoremap <leader>l :tabnext<CR>
+" leader + t + h/l 
+nnoremap <leader>th :tabm -1<CR>
+nnoremap <leader>tl :tabm +1<CR>
+
 
 " --- Styles
 set termguicolors
