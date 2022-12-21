@@ -1,5 +1,7 @@
 " --- Plugins ---
 call plug#begin()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'prettier/vim-prettier' 
 call plug#end()
@@ -37,6 +39,10 @@ let g:netrw_keepdir = 0
 " --- Global keymapping
 nnoremap <SPACE> <Nop>
 let mapleader=" "
+
+" leader + p: list buffers 
+nnoremap <leader>p :FZF<CR>
+" leader + e: open file tree
 
 
 " --- Styles
