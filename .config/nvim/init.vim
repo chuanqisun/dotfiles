@@ -30,6 +30,8 @@ set guicursor+=i:blinkon100
 
 set mouse+=a " Mouse interaction in all modes
 
+set noswapfile
+
 
 " --- File tree customization
 let g:netrw_liststyle = 3
@@ -42,6 +44,7 @@ let mapleader=" "
 
 " leader + p: list buffers 
 nnoremap <leader>p :FZF<CR>
+nnoremap <leader>f :Rg<CR>
 " leader + e: open file tree
 
 
