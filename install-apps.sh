@@ -6,9 +6,14 @@ set -x
 ## Install common used tools
 sudo apt install zsh
 
-## Install neovim
+## Install fzf
+sudo apt-get install fzf
 
-# app image dependency FUSE
+## Install rg
+sudo apt-get install ripgrep
+
+## Install neovim
+# appimage dependency FUSE
 sudo apt install libfuse2
 
 curl -fLO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
