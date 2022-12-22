@@ -1,7 +1,3 @@
-### env path
-#
-export PATH=/home/chusun/bin:$PATH
-
 # FZF default search should include dot files
 # https://github.com/junegunn/fzf/issues/634
 export FZF_DEFAULT_COMMAND="rg --files --follow --no-ignore-vcs --hidden -g '!{**/node_modules/*,**/.git/*}'"
