@@ -15,8 +15,6 @@ alias ll="ls"
 alias ls="ls -alh --color"
 alias ..="cd ../"
 alias ...="cd ../../"
-alias ....="cd ../../../"
-alias .....="cd ../../../../"
 
 ### History
 HISTFILE=~/.zsh_history
