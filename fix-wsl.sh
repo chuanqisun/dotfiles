@@ -6,13 +6,15 @@
 
 sudo apt-get remove xclip
 
-curl -fL https://github.com/equalsraf/win32yank/releases/download/v0.0.4/win32yank-x64.zip --output temp-yank.zip
-unzip temp-yank.zip -d temp-yank
-chmod +x temp-yank/win32yank.exe
+curl -fLO https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip
+unzip win32yank-x64.zip -d win32yank-x64-temp
 
-cp temp-yank/win32yank.exe /usr/local/bin/win32yank.exe
+chmod +x win32yank-x64-temp/win32yank.exe
 
-rm -rf temp-yank*
+sudo cp win32yank-x64-temp/win32yank.exe /usr/local/bin/
+
+rm -rf win32yank-x64*
+
 
 ## Add a script to fix WSL network issue
 # Note: user must set the .bat to run in admin mode for it to take effect
