@@ -1,0 +1,5 @@
+alias ls="ls -alh --color"
+alias ..="cd ../"
+alias ...="cd ../../"
+alias ....="cd ../../../"
+alias .....="cd ../../../../"
