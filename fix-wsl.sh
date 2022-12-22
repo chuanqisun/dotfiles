@@ -13,3 +13,7 @@ chmod +x temp-yank/win32yank.exe
 cp temp-yank/win32yank.exe /usr/local/bin/win32yank.exe
 
 rm -rf temp-yank*
+
+## Add a script to fix WSL network issue
+# Note: user must set the .bat to run in admin mode for it to take effect
+cp wsl/fix-wsl-network.bat /mnt/c/Users/chusun/Desktop/fix-wsl-network.bat

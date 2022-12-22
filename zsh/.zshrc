@@ -7,6 +7,7 @@ RPROMPT='%*'
 
 
 # alias
+alias ll="ls"
 alias ls="ls -alh --color"
 alias ..="cd ../"
 alias ...="cd ../../"
