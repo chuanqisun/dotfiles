@@ -103,7 +103,7 @@ require('packer').startup(function(use)
   null_ls.setup({
     on_attach = function(client, bufnr)
       if client.supports_method("textDocument/formatting") then
-        vim.keymap.set("n", "<Leader>f", function()
+        vim.keymap.set("n", "<C-k>f", function()
           vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
         end, { buffer = bufnr, desc = "[lsp] format" })
 
@@ -120,7 +120,7 @@ require('packer').startup(function(use)
       end
 
       if client.supports_method("textDocument/rangeFormatting") then
-        vim.keymap.set("x", "<Leader>f", function()
+        vim.keymap.set("x", "<C-k>f", function()
           vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
         end, { buffer = bufnr, desc = "[lsp] format" })
       end
@@ -130,7 +130,7 @@ require('packer').startup(function(use)
   local prettier = require("prettier")
 
   prettier.setup({
-    bin = 'prettierd',
+    bin = 'prettier',
     cli_options = {
       print_width = 160,
       tab_width = 2,
