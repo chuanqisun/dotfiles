@@ -29,8 +29,10 @@ PROMPT='%(?.%F{green}%?.%F{red}%?)%f %B%F{yellow}%3~%F{cyan}${vcs_info_msg_0_}%f
 ### Alias
 alias ll="ls"
 alias ls="ls -alh --color"
-alias ..="cd ../"
-alias ...="cd ../../"
+alias ..="../"
+alias ...="../../"
+alias ../="cd ../"
+alias ../../="cd ../../"
 
 ### History
 HISTFILE=~/.zsh_history
