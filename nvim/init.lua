@@ -67,6 +67,9 @@ require('packer').startup(function(use)
   use "jose-elias-alvarez/null-ls.nvim" -- required by prettier
   use "neovim/nvim-lspconfig" -- required by many other plugins
 
+  -- Prettier
+  use "MunifTanjim/prettier.nvim"
+
   -- Copilot
   use "github/copilot.vim"
 
@@ -99,6 +102,30 @@ require('packer').startup(function(use)
   -- Search
   vim.keymap.set('n', '<leader>p', ':FZF<CR>', { noremap = true})
   vim.keymap.set('n', '<leader>f', ':Rg<CR>', { noremap = true})
+
+  -- Indent
+  vim.keymap.set('i', '<M-h>', '<C-o><<', { noremap = true})
+  vim.keymap.set('i', '<M-l>', '<C-o>>>', { noremap = true})
+  vim.keymap.set('n', '<M-h>', '<<', { noremap = true})
+  vim.keymap.set('n', '<M-l>', '>>', { noremap = true})
+  vim.keymap.set('v', '<M-h>', '<gv', { noremap = true})
+  vim.keymap.set('v', '<M-l>', '>gv', { noremap = true})
+
+  -- Swap
+  vim.keymap.set('i', '<M-j>', '<C-o>:m+1<CR>', { noremap = true})
+  vim.keymap.set('i', '<M-k>', '<C-o>:m-2<CR>', { noremap = true})
+  vim.keymap.set('n', '<M-j>', ':m+1<CR>', { noremap = true})
+  vim.keymap.set('n', '<M-k>', ':m-2<CR>', { noremap = true})
+  vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv", { noremap = true})
+  vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv", { noremap = true})
+  
+  -- Duplicate
+  vim.keymap.set('i', '<M-J>', '<C-o>:co+0<CR>', { noremap = true})
+  vim.keymap.set('i', '<M-K>', '<C-o>:co-1<CR>', { noremap = true})
+  vim.keymap.set('n', '<M-J>', ':co+0<CR>', { noremap = true})
+  vim.keymap.set('n', '<M-K>', ':co-1<CR>', { noremap = true})
+  vim.keymap.set('v', '<M-K>', ":co '>+0<CR>gv", { noremap = true})
+  vim.keymap.set('v', '<M-J>', ":co '<-1<CR>gv", { noremap = true})
 
 
   -- external languages
@@ -136,6 +163,44 @@ require('packer').startup(function(use)
   -- Formatters
   vim.g.rustfmt_autosave = 1
 
+  local null_ls = require("null-ls")
+
+  local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+  local event = "BufWritePre" -- or "BufWritePost"
+  local async = event == "BufWritePost"
+
+  null_ls.setup({
+    on_attach = function(client, bufnr)
+      if client.supports_method("textDocument/formatting") then
+        vim.keymap.set("n", "<Leader>kf", function()
+          vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+        end, { buffer = bufnr, desc = "[lsp] format" })
+
+        -- format on save
+        vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+        vim.api.nvim_create_autocmd(event, {
+          buffer = bufnr,
+          group = group,
+          callback = function()
+            vim.lsp.buf.format({ bufnr = bufnr, async = async })
+          end,
+          desc = "[lsp] format on save",
+        })
+      end
+
+      if client.supports_method("textDocument/rangeFormatting") then
+        vim.keymap.set("x", "<Leader>kf", function()
+          vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+        end, { buffer = bufnr, desc = "[lsp] format" })
+      end
+    end,
+  })
+  local prettier = require("prettier")
+  prettier.setup({
+    bin = 'prettierd'
+  })
+
+  -- Completion
   local cmp = require("cmp")
   cmp.setup({
     snippet = {
