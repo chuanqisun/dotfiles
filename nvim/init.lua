@@ -31,38 +31,77 @@ vim.opt.guicursor = vim.opt.guicursor + "i:blinkon100"
 vim.g.mapleader = ' ' -- Space as leader key
 vim.keymap.set('', '<space>', '<nop>', { noremap = true})
 
+-- copilot 
+vim.cmd [[
+  imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
+  imap <silent> <C-h> <plug>(copilot-dismiss)
+  imap <silent> <C-j> <plug>(copilot-next)
+  imap <silent> <C-k> <plug>(copilot-previous)
+  imap <silent> <C-\> <plug>(copilot-suggest)
+  let g:copilot_no_tab_map = v:true
+]]
+
+
+vim.api.nvim_create_user_command('CopilotToggle', function ()
+  vim.g.copilot_enabled = not vim.g.copilot_enabled
+  if vim.g.copilot_enabled then
+    vim.cmd('Copilot disable')
+    print("Copilot OFF")
+  else 
+    vim.cmd('Copilot enable')
+    print("Copilot ON")
+  end
+end, {nargs = 0})
+vim.keymap.set('', '<M-\\>', ':CopilotToggle<CR>', { noremap = true, silent = true })
 
 -- PlugIn specific (Todo: move into modules)
 require('packer').startup(function(use)
   -- Package manager, must be first
-  use {"wbthomason/packer.nvim", config = function()
-    require('packer').init{ max_jobs = 10 } -- Ref: https://github.com/wbthomason/packer.nvim/issues/756
-  end}
-
-  -- Theme
+  use "wbthomason/packer.nvim"
   use "ellisonleao/gruvbox.nvim"
-  vim.o.background = "dark" -- or "light" for light mode
-  vim.cmd("colorscheme gruvbox")
-
-  -- Search
   use { 'junegunn/fzf', run = ":call fzf#install()" }
   use { 'junegunn/fzf.vim' }
-  vim.keymap.set('n', '<leader>p', ':FZF<CR>', { noremap = true})
-  vim.keymap.set('n', '<leader>f', ':Rg<CR>', { noremap = true})
-
 
   -- Deps
   use "nvim-lua/plenary.nvim" -- required by prettier
   use "jose-elias-alvarez/null-ls.nvim" -- required by prettier
+  use "neovim/nvim-lspconfig" -- required by many other plugins
+
+  -- Copilot
+  use "github/copilot.vim"
+
+  -- LSP installer
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+  }
+
+  -- Completion
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/nvim-cmp'
+
+  use 'hrsh7th/cmp-vsnip'
+  use 'hrsh7th/vim-vsnip'
+
+  -- Rust
+  use {
+    "rust-lang/rust.vim",
+    "simrat39/rust-tools.nvim"
+  }
+
+  -- Theme
+  vim.o.background = "dark" -- or "light" for light mode
+  vim.cmd("colorscheme gruvbox")
+
+  -- Search
+  vim.keymap.set('n', '<leader>p', ':FZF<CR>', { noremap = true})
+  vim.keymap.set('n', '<leader>f', ':Rg<CR>', { noremap = true})
+
 
   -- external languages
-  use {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-      "neovim/nvim-lspconfig",
-      "rust-lang/rust.vim",
-      "simrat39/rust-tools.nvim"
-  }
   require("mason").setup()
   require("mason-lspconfig").setup()
 
@@ -72,7 +111,10 @@ require('packer').startup(function(use)
       -- and will be called for each installed server that doesn't have
       -- a dedicated handler.
       function (server_name) -- default handler (optional)
-          require("lspconfig")[server_name].setup {}
+          local capabilities = require('cmp_nvim_lsp').default_capabilities()
+          require("lspconfig")[server_name].setup {
+            capabilities = capabilities
+          }
       end,
       -- Next, you can provide a dedicated handler for specific servers.
       -- For example, a handler override for the `rust_analyzer`:
@@ -91,9 +133,26 @@ require('packer').startup(function(use)
       end
   }
 
-  -- Prettier
-  use 'MunifTanjim/prettier.nvim'
-  require("prettier").setup({bin = 'prettierd'})
-  vim.keymap.set('n', '<leader>kf', ':Prettier<CR>', { noremap = true})
+  -- Formatters
+  vim.g.rustfmt_autosave = 1
+
+  local cmp = require("cmp")
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      end,
+    },
+    mapping = cmp.mapping.preset.insert({
+      -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      -- ['<C-Space>'] = cmp.mapping.complete(),
+      -- ['<C-e>'] = cmp.mapping.abort(),
+      ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+      {name = 'nvim_lsp'}
+    })
+  })
 
 end)
