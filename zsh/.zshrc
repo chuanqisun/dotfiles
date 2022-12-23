@@ -22,7 +22,7 @@ zstyle ':vcs_info:git:*' actionformats ' (%b|%a%u%c)'
 precmd() { vcs_info }
 
 
-PROMPT='%(?.%F{green}%?.%F{red}?%?)%f %B%F{yellow}%3~%F{red}${vcs_info_msg_0_}%f%F{yellow} %# %f%b'
+PROMPT='%(?.%F{green}%?.%F{red}%?)%f %B%F{yellow}%3~%F{cyan}${vcs_info_msg_0_}%f%F{yellow} %# %f%b'
 #RPROMPT='%F{red}${vcs_info_msg_0_}%f'
 
 
