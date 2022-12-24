@@ -2,6 +2,9 @@
 # https://github.com/junegunn/fzf/issues/634
 export FZF_DEFAULT_COMMAND="rg --files --follow --no-ignore-vcs --hidden -g '!{**/node_modules/*,**/.git/*}'"
 
+### ENV
+export VISUAL="nvim"
+export EDITOR="nvim"
 
 # Allow dynamic command prompt
 setopt prompt_subst
@@ -42,6 +45,7 @@ setopt appendhistory
 
 
 
+### Node version manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
