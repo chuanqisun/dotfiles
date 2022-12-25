@@ -58,9 +58,10 @@ vim.cmd([[
   imap <silent> <C-\> <plug>(copilot-suggest)
 ]])
 
+local copilot_on = true
 vim.api.nvim_create_user_command("CopilotToggle", function()
-	vim.g.copilot_enabled = not vim.g.copilot_enabled
-	if vim.g.copilot_enabled then
+	copilot_on = not copilot_on
+	if copilot_on then
 		vim.cmd("Copilot disable")
 		print("Copilot OFF")
 	else
@@ -68,7 +69,7 @@ vim.api.nvim_create_user_command("CopilotToggle", function()
 		print("Copilot ON")
 	end
 end, { nargs = 0 })
-vim.keymap.set("", "<M-\\>", ":CopilotToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-\\>", ":CopilotToggle<CR>", { noremap = true, silent = true })
 
 -- Spell check
 vim.api.nvim_create_user_command("SpellToggle", function()
