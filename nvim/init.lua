@@ -59,205 +59,208 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_user_command("CopilotToggle", function()
-	vim.g.copilot_enabled = not vim.g.copilot_enabled
-	if vim.g.copilot_enabled then
-		vim.cmd("Copilot disable")
-		print("Copilot OFF")
-	else
-		vim.cmd("Copilot enable")
-		print("Copilot ON")
-	end
+  vim.g.copilot_enabled = not vim.g.copilot_enabled
+  if vim.g.copilot_enabled then
+    vim.cmd("Copilot disable")
+    print("Copilot OFF")
+  else
+    vim.cmd("Copilot enable")
+    print("Copilot ON")
+  end
 end, { nargs = 0 })
 vim.keymap.set("", "<M-\\>", ":CopilotToggle<CR>", { noremap = true, silent = true })
 
 -- Spell check
 vim.api.nvim_create_user_command("SpellToggle", function()
-	vim.opt.spell = not (vim.opt.spell:get())
-	if vim.opt.spell:get() then
-		print("Spell ON")
-	else
-		print("Spell OFF")
-	end
+  vim.opt.spell = not (vim.opt.spell:get())
+  if vim.opt.spell:get() then
+    print("Spell ON")
+  else
+    print("Spell OFF")
+  end
 end, { nargs = 0 })
 
 -- PlugIn specific (Todo: move into modules)
 require("packer").startup(function(use)
-	-- Package manager, must be first
-	use("wbthomason/packer.nvim")
+  -- Package manager, must be first
+  use("wbthomason/packer.nvim")
 
-	-- Theme
-	use("ellisonleao/gruvbox.nvim")
-	vim.cmd("colorscheme gruvbox")
-	vim.o.background = "dark" -- or "light" for light mode
+  -- Theme
+  use("ellisonleao/gruvbox.nvim")
+  vim.cmd("colorscheme gruvbox")
+  vim.o.background = "dark" -- or "light" for light mode
 
-	-- Search
-	use({ "junegunn/fzf", run = ":call fzf#install()" })
-	use({ "junegunn/fzf.vim" })
-	vim.keymap.set("n", "<leader>p", ":FZF<CR>", { noremap = true })
-	vim.keymap.set("n", "<leader>f", ":Rg<CR>", { noremap = true })
+  -- Search
+  use({ "junegunn/fzf", run = ":call fzf#install()" })
+  use({ "junegunn/fzf.vim" })
+  vim.keymap.set("n", "<leader>p", ":FZF<CR>", { noremap = true })
+  vim.keymap.set("n", "<leader>f", ":Rg<CR>", { noremap = true })
 
-	use("neovim/nvim-lspconfig") -- required by many other plugins
+  use("neovim/nvim-lspconfig") -- required by many other plugins
 
-	use("nvim-lua/plenary.nvim") -- required by null-ls
-	use("jose-elias-alvarez/null-ls.nvim")
+  use("nvim-lua/plenary.nvim") -- required by null-ls
+  use("jose-elias-alvarez/null-ls.nvim")
 
-	-- Copilot
-	use("github/copilot.vim")
+  -- Copilot
+  use("github/copilot.vim")
 
-	-- LSP installer
-	use({
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-	})
+  -- LSP installer
+  use({
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+  })
 
-	-- Completion
-	use("hrsh7th/cmp-nvim-lsp")
-	use("hrsh7th/cmp-buffer")
-	use("hrsh7th/cmp-path")
-	use("hrsh7th/cmp-cmdline")
-	use("hrsh7th/nvim-cmp")
+  -- Completion
+  use("hrsh7th/cmp-nvim-lsp")
+  use("hrsh7th/cmp-buffer")
+  use("hrsh7th/cmp-path")
+  use("hrsh7th/cmp-cmdline")
+  use("hrsh7th/nvim-cmp")
 
-	use("hrsh7th/cmp-vsnip")
-	use("hrsh7th/vim-vsnip")
+  use("hrsh7th/cmp-vsnip")
+  use("hrsh7th/vim-vsnip")
 
-	-- Rust
-	use({
-		"rust-lang/rust.vim",
-		"simrat39/rust-tools.nvim",
-	})
+  -- Rust
+  use({
+    "rust-lang/rust.vim",
+    "simrat39/rust-tools.nvim",
+  })
 
-	-- LSP
-	require("mason").setup()
-	require("mason-lspconfig").setup()
+  -- LSP
+  require("mason").setup()
+  require("mason-lspconfig").setup()
 
-	require("mason-lspconfig").setup_handlers({
-		-- The first entry (without a key) will be the default handler
-		-- and will be called for each installed server that doesn't have
-		-- a dedicated handler.
-		function(server_name) -- default handler (optional)
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			require("lspconfig")[server_name].setup({
-				capabilities = capabilities,
-			})
-		end,
-		-- Next, you can provide a dedicated handler for specific servers.
-		-- For example, a handler override for the `rust_analyzer`:
-		-- ["rust_analyzer"] = function()
-		--   local rt = require("rust-tools")
-		--   rt.setup({
-		--     server = {
-		--       on_attach = function(_, bufnr)
-		--         -- Hover actions
-		--         vim.keymap.set("n", "<C-k><C-i>", rt.hover_actions.hover_actions, { buffer = bufnr })
-		--         -- Code action groups
-		--         vim.keymap.set("n", "<C-k><C-a>", rt.code_action_group.code_action_group, { buffer = bufnr })
-		--       end,
-		--     },
-		--   })
-		-- end,
-	})
+  require("mason-lspconfig").setup_handlers({
+    -- The first entry (without a key) will be the default handler
+    -- and will be called for each installed server that doesn't have
+    -- a dedicated handler.
+    function(server_name) -- default handler (optional)
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      require("lspconfig")[server_name].setup({
+        capabilities = capabilities,
+      })
+    end,
+    -- Next, you can provide a dedicated handler for specific servers.
+    -- For example, a handler override for the `rust_analyzer`:
+    -- ["rust_analyzer"] = function()
+    --   local rt = require("rust-tools")
+    --   rt.setup({
+    --     server = {
+    --       on_attach = function(_, bufnr)
+    --         -- Hover actions
+    --         vim.keymap.set("n", "<C-k><C-i>", rt.hover_actions.hover_actions, { buffer = bufnr })
+    --         -- Code action groups
+    --         vim.keymap.set("n", "<C-k><C-a>", rt.code_action_group.code_action_group, { buffer = bufnr })
+    --       end,
+    --     },
+    --   })
+    -- end,
+  })
 
-	-- Lsp keybindings
-	-- ref: https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp/
-	vim.api.nvim_create_autocmd("LspAttach", {
-		desc = "LSP actions",
-		callback = function()
-			local bufmap = function(mode, lhs, rhs)
-				local opts = { buffer = true }
-				vim.keymap.set(mode, lhs, rhs, opts)
-			end
+  -- Lsp keybindings
+  -- ref: https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp/
+  vim.api.nvim_create_autocmd("LspAttach", {
+    desc = "LSP actions",
+    callback = function()
+      local bufmap = function(mode, lhs, rhs)
+        local opts = { buffer = true }
+        vim.keymap.set(mode, lhs, rhs, opts)
+      end
 
-			-- Displays hover information about the symbol under the cursor
-			bufmap("n", "<C-k><C-i>", "<cmd>lua vim.lsp.buf.hover()<cr>")
+      -- Displays hover information about the symbol under the cursor
+      bufmap("n", "<C-k><C-i>", "<cmd>lua vim.lsp.buf.hover()<cr>")
 
-			-- Jump to the definition
-			bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+      -- Code actions
+      bufmap("n", "<C-k><C-a>", "<cmd>lua vim.lsp.buf.code_action()<cr>")
 
-			-- Jump to declaration
-			-- bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
+      -- Jump to the definition
+      bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
 
-			-- Lists all the implementations for the symbol under the cursor
-			-- bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
+      -- Jump to declaration
+      -- bufmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
 
-			-- Jumps to the definition of the type symbol
-			-- bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
+      -- Lists all the implementations for the symbol under the cursor
+      -- bufmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
 
-			-- Lists all the references
-			bufmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
+      -- Jumps to the definition of the type symbol
+      -- bufmap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
 
-			-- Displays a function's signature information
-			-- bufmap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+      -- Lists all the references
+      bufmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
 
-			-- Renames all references to the symbol under the cursor
-			bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
+      -- Displays a function's signature information
+      -- bufmap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
 
-			-- Selects a code action available at the current cursor position
-			-- bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-			-- bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
+      -- Renames all references to the symbol under the cursor
+      bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
 
-			-- Show diagnostics in a floating window
-			-- bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
+      -- Selects a code action available at the current cursor position
+      -- bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+      -- bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
 
-			-- Move to the previous diagnostic
-			-- bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
+      -- Show diagnostics in a floating window
+      -- bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
-			-- Move to the next diagnostic
-			bufmap("n", "<F8>", "<cmd>lua vim.diagnostic.goto_next()<cr>")
-		end,
-	})
+      -- Move to the previous diagnostic
+      -- bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
 
-	-- Formatters
-	local null_ls = require("null-ls")
-	local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
-	local event = "BufWritePre" -- or "BufWritePost"
-	local async = event == "BufWritePost"
+      -- Move to the next diagnostic
+      bufmap("n", "<F8>", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+    end,
+  })
 
-	null_ls.setup({
-		sources = {
-			null_ls.builtins.formatting.prettierd,
-			null_ls.builtins.formatting.rustfmt,
-			null_ls.builtins.formatting.stylua,
-		},
-		on_attach = function(client, bufnr)
-			if client.supports_method("textDocument/formatting") then
-				vim.keymap.set("n", "<Leader>kf", function()
-					vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-				end, { buffer = bufnr, desc = "[lsp] format" })
+  -- Formatters
+  local null_ls = require("null-ls")
+  local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+  local event = "BufWritePre" -- or "BufWritePost"
+  local async = event == "BufWritePost"
 
-				-- format on save
-				vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-				vim.api.nvim_create_autocmd(event, {
-					buffer = bufnr,
-					group = group,
-					callback = function()
-						print("formatted with prettierd")
-						vim.lsp.buf.format({ bufnr = bufnr, async = async })
-					end,
-					desc = "[lsp] format on save",
-				})
-			end
+  null_ls.setup({
+    sources = {
+      null_ls.builtins.formatting.prettierd,
+      null_ls.builtins.formatting.rustfmt,
+      null_ls.builtins.formatting.stylua,
+    },
+    on_attach = function(client, bufnr)
+      if client.supports_method("textDocument/formatting") then
+        vim.keymap.set("n", "<Leader>kf", function()
+          vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+        end, { buffer = bufnr, desc = "[lsp] format" })
 
-			if client.supports_method("textDocument/rangeFormatting") then
-				vim.keymap.set("x", "<Leader>kf", function()
-					vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-				end, { buffer = bufnr, desc = "[lsp] format" })
-			end
-		end,
-	})
+        -- format on save
+        vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+        vim.api.nvim_create_autocmd(event, {
+          buffer = bufnr,
+          group = group,
+          callback = function()
+            print("formatted with prettierd")
+            vim.lsp.buf.format({ bufnr = bufnr, async = async })
+          end,
+          desc = "[lsp] format on save",
+        })
+      end
 
-	-- Completion
-	local cmp = require("cmp")
-	cmp.setup({
-		snippet = {
-			expand = function(args)
-				vim.fn["vsnip#anonymous"](args.body) -- Not in use, but required by author
-			end,
-		},
-		mapping = cmp.mapping.preset.insert({
-			["<Tab>"] = cmp.mapping.confirm({ select = true }),
-		}),
-		sources = cmp.config.sources({
-			{ name = "nvim_lsp" },
-		}),
-	})
+      if client.supports_method("textDocument/rangeFormatting") then
+        vim.keymap.set("x", "<Leader>kf", function()
+          vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+        end, { buffer = bufnr, desc = "[lsp] format" })
+      end
+    end,
+  })
+
+  -- Completion
+  local cmp = require("cmp")
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- Not in use, but required by author
+      end,
+    },
+    mapping = cmp.mapping.preset.insert({
+      ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+    }),
+    sources = cmp.config.sources({
+      { name = "nvim_lsp" },
+    }),
+  })
 end)
