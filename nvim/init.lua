@@ -129,7 +129,10 @@ require("packer").startup(function(use)
 
   -- LSP
   require("mason").setup()
-  require("mason-lspconfig").setup()
+  require("mason-lspconfig").setup({
+    ensure_installed = {"rust_analyzer", "tsserver"},
+    automatic_installation = true
+  })
 
   require("mason-lspconfig").setup_handlers({
     -- The first entry (without a key) will be the default handler
