@@ -9,6 +9,9 @@ export EDITOR="nvim"
 # Allow dynamic command prompt
 setopt prompt_subst
 
+# Automatic `cd` prefix to directory
+setopt auto_cd
+
 # Prompt
 # Load version control information
 autoload -Uz vcs_info
@@ -34,8 +37,6 @@ alias ll="ls"
 alias ls="ls -alh --color"
 alias ..="../"
 alias ...="../../"
-alias ../="cd ../"
-alias ../../="cd ../../"
 
 ### History
 HISTFILE=~/.zsh_history
