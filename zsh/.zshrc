@@ -34,11 +34,15 @@ alias ..="../"
 alias ...="../../"
 
 # History
+## ctrl + k/j to scroll history
+bindkey '^k' history-beginning-search-backward
+bindkey '^j' history-beginning-search-forward
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
+setopt histignorealldups
 
 # Apps
 
