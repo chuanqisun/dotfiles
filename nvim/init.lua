@@ -71,6 +71,11 @@ vim.api.nvim_create_user_command("CopilotToggle", function()
 end, { nargs = 0 })
 vim.keymap.set("n", "<C-\\>", ":CopilotToggle<CR>", { noremap = true, silent = true })
 
+-- Edit config file
+vim.api.nvim_create_user_command("ConfigEdit", function()
+  vim.cmd("e " .. os.getenv("MYVIMRC"))
+end, { nargs = 0 })
+
 -- Spell check
 vim.api.nvim_create_user_command("SpellToggle", function()
   vim.opt.spell = not (vim.opt.spell:get())
@@ -111,6 +116,9 @@ require("packer").startup(function(use)
     "williamboman/mason-lspconfig.nvim",
   })
 
+  -- Commentary
+  use("terrortylor/nvim-comment")
+
   -- Completion
   use("hrsh7th/cmp-nvim-lsp")
   use("hrsh7th/cmp-buffer")
@@ -130,8 +138,8 @@ require("packer").startup(function(use)
   -- LSP
   require("mason").setup()
   require("mason-lspconfig").setup({
-    ensure_installed = {"rust_analyzer", "tsserver"},
-    automatic_installation = true
+    ensure_installed = { "rust_analyzer", "tsserver" },
+    automatic_installation = true,
   })
 
   require("mason-lspconfig").setup_handlers({
@@ -251,6 +259,9 @@ require("packer").startup(function(use)
       end
     end,
   })
+
+  -- Commentary
+  require("nvim_comment").setup()
 
   -- Completion
   local cmp = require("cmp")
