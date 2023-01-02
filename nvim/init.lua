@@ -48,6 +48,9 @@ vim.keymap.set("n", "<M-K>", ":co-1<CR>", { noremap = true })
 vim.keymap.set("v", "<M-K>", ":co '>+0<CR>gv", { noremap = true })
 vim.keymap.set("v", "<M-J>", ":co '<-1<CR>gv", { noremap = true })
 
+-- Netrw
+vim.keymap.set("n", "<leader>e", ":E<CR>", { noremap = true })
+
 -- copilot
 -- Ctrl-l and Tab both accept the suggestion
 vim.cmd([[
