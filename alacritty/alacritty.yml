@@ -1,0 +1,6 @@
+shell:
+  program: "C:\\Windows\\System32\\wsl.exe"
+  args:
+    - --cd ~
+key_bindings:
+  - { key: Space, mods: Control, chars: "\x00" }
