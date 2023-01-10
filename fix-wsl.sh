@@ -19,3 +19,7 @@ rm -rf win32yank-x64*
 ## Add a script to fix WSL network issue
 # Note: user must set the .bat to run in admin mode for it to take effect
 cp wsl/fix-wsl-network.bat /mnt/c/Users/chusun/Desktop/fix-wsl-network.bat
+
+# Fix alacritty config
+mkdir -p /mnt/c/Users/chusun/AppData/Roaming/alacritty
+cp alacritty/alacritty.yml /mnt/c/Users/chusun/AppData/Roaming/alacritty/alacritty.yml
