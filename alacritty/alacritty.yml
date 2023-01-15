@@ -4,3 +4,9 @@ shell:
     - --cd ~
 key_bindings:
   - { key: Space, mods: Control, chars: "\x00" }
+
+font:
+  # Normal (roman) font face
+  normal:
+    family: FiraCode Nerd Font
+    style: Regular

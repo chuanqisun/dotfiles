@@ -269,6 +269,11 @@ require("packer").startup(function(use)
 		end,
 	})
 
+  -- File tree
+  use("nvim-tree/nvim-tree.lua")
+  use("nvim-tree/nvim-web-devicons")
+  require("nvim-tree").setup()
+
 	-- Commentary
 	require("nvim_comment").setup()
 
