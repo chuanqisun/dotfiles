@@ -2,6 +2,19 @@
 
 ### Run this script to make WSL compatible with other Linux tools
 
+
+## Add WSL utilities: https://wslutiliti.es/wslu/install.html
+sudo apt install gnupg2 apt-transport-https
+wget -O - https://pkg.wslutiliti.es/public.key | sudo tee -a /etc/apt/trusted.gpg.d/wslu.asc
+
+# Debian 10
+echo "deb https://pkg.wslutiliti.es/debian buster main" | sudo tee -a /etc/apt/sources.list
+# Debian 11
+echo "deb https://pkg.wslutiliti.es/debian bullseye main" | sudo tee -a /etc/apt/sources.list
+
+sudo apt update
+sudo apt install wslu
+
 ## Fix clipboard by replacing xclip with win32yank.exe
 
 sudo apt-get remove xclip
