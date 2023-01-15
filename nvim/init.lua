@@ -52,7 +52,7 @@ vim.keymap.set("v", "<M-l>", ">gv", { noremap = true })
 -- vim.keymap.set("v", "<M-J>", ":co '<-1<CR>gv", { noremap = true })
 
 -- Netrw
-vim.keymap.set("n", "<leader>e", ":E<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true })
 
 -- copilot
 -- Ctrl-l and Tab both accept the suggestion
@@ -269,10 +269,10 @@ require("packer").startup(function(use)
 		end,
 	})
 
-  -- File tree
-  use("nvim-tree/nvim-tree.lua")
-  use("nvim-tree/nvim-web-devicons")
-  require("nvim-tree").setup()
+	-- File tree
+	use("nvim-tree/nvim-tree.lua")
+	use("nvim-tree/nvim-web-devicons")
+	require("nvim-tree").setup()
 
 	-- Commentary
 	require("nvim_comment").setup()
