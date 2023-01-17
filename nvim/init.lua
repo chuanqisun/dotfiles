@@ -61,7 +61,6 @@ vim.cmd([[
   imap <silent> <C-h> <plug>(copilot-dismiss)
   imap <silent> <C-j> <plug>(copilot-next)
   imap <silent> <C-k> <plug>(copilot-previous)
-  imap <silent> <C-\> <plug>(copilot-suggest)
 ]])
 
 local copilot_on = true
@@ -76,6 +75,7 @@ vim.api.nvim_create_user_command("CopilotToggle", function()
   copilot_on = not copilot_on
 end, { nargs = 0 })
 vim.keymap.set("n", "<C-\\>", ":CopilotToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-\\>", "<C-o>:Copilot panel<CR>", { noremap = true })
 
 -- Edit config file
 vim.api.nvim_create_user_command("ConfigEdit", function()
