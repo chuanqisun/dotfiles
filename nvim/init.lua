@@ -32,5 +32,27 @@ require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 
   -- Commentary
-  use("tpope/vim-commentary")
+	use("terrortylor/nvim-comment")
+  require("nvim_comment").setup()
+
+  -- Copilot, lazy loaded on insert
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({})
+    end,
+  }
+
+	-- required by many other plugins
+  use {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
+  }
+
+  require("mason").setup()
+  require("mason-lspconfig").setup()
+
 end)
