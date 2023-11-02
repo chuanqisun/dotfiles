@@ -30,9 +30,9 @@ vim.keymap.set("", "<space>", "<nop>", { noremap = true })
 -- Bootstrap packer
 local ensure_packer = function()
   local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
     vim.cmd [[packadd packer.nvim]]
     return true
   end
@@ -40,6 +40,8 @@ local ensure_packer = function()
 end
 
 local packer_bootstrap = ensure_packer()
+
+-- Refactor all plugins to be lazy loaded so Packer can install them in a single pass without missing dependency error
 
 -- PlugIn specific (Todo: move into modules)
 require("packer").startup(function(use)
