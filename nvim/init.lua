@@ -25,6 +25,7 @@ vim.opt.guicursor = vim.opt.guicursor + "sm:block-blinkwait175-blinkoff150-blink
 
 -- Leader key
 vim.g.mapleader = " " -- Space as leader key
+vim.keymap.set("", "<space>", "<nop>", { noremap = true })
 
 -- PlugIn specific (Todo: move into modules)
 require("packer").startup(function(use)
@@ -50,6 +51,15 @@ require("packer").startup(function(use)
   vim.cmd("colorscheme gruvbox")
   vim.opt.background = "dark" -- or "light" for light mode
 
+  -- File explorer with fzf
+  use({ "junegunn/fzf", run = ":call fzf#install()" })
+  use({ "junegunn/fzf.vim" })
+
+  vim.api.nvim_create_user_command('OmniMenu', function()
+    vim.cmd(#vim.fn.system('git rev-parse') > 0 and 'Files' or 'GFiles')
+  end, { nargs = 0 })
+  vim.api.nvim_set_keymap('n', '<C-p>', ':OmniMenu<CR>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-f>', ':Rg<CR>', { noremap = true, silent = true })
 
   -- Copilot, lazy loaded on insert
   use {
@@ -61,7 +71,7 @@ require("packer").startup(function(use)
     end,
   }
 
-  -- required by many other plugins
+  -- LSP is required by many other plugins
   use {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
@@ -95,6 +105,8 @@ require("packer").startup(function(use)
   use("hrsh7th/cmp-buffer")
   use("hrsh7th/cmp-path")
   use("hrsh7th/cmp-cmdline")
+  use("hrsh7th/cmp-vsnip")
+  use("hrsh7th/vim-vsnip")
   use("hrsh7th/nvim-cmp")
 
   -- menuone: popup even when there's only one match
@@ -105,14 +117,30 @@ require("packer").startup(function(use)
   local cmp = require("cmp")
 
   cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- Not in use, but required by author
+      end,
+    },
     mapping = cmp.mapping.preset.insert({
       ["<CR>"] = cmp.mapping.confirm({ select = true }),
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item()
+        else
+          fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+        end
+      end, { "i", "s" }),
+      ["<S-Tab>"] = cmp.mapping(function()
+        if cmp.visible() then
+          cmp.select_prev_item()
+        end
+      end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
       { name = "nvim_lsp" },
     }),
   })
-
 
   -- expose nvim capabilities to any LSP
   local lspconfig = require('lspconfig')
