@@ -27,6 +27,20 @@ vim.opt.guicursor = vim.opt.guicursor + "sm:block-blinkwait175-blinkoff150-blink
 vim.g.mapleader = " " -- Space as leader key
 vim.keymap.set("", "<space>", "<nop>", { noremap = true })
 
+-- Bootstrap packer
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
 -- PlugIn specific (Todo: move into modules)
 require("packer").startup(function(use)
   -- Package manager, must be first
@@ -81,24 +95,6 @@ require("packer").startup(function(use)
   require("mason").setup()
   require("mason-lspconfig").setup()
 
-
-
-
-  use("rust-lang/rust.vim")
-  vim.g.rustfmt_autosave = 1
-
-  use("simrat39/rust-tools.nvim")
-  local rt = require("rust-tools");
-  rt.setup({
-    tools = {
-      inlay_hints = {
-        auto = false,
-      },
-      hover_actions = {
-        auto_focus = true, -- Issue: https://github.com/simrat39/rust-tools.nvim/issues/273
-      },
-    }
-  })
 
   -- Completion
   use("hrsh7th/cmp-nvim-lsp")
@@ -179,12 +175,37 @@ require("packer").startup(function(use)
 
   -- Auto formatting
   -- Ref: https://github.com/lukas-reineke/lsp-format.nvim
-  require("lsp-format").setup {}
   use("lukas-reineke/lsp-format.nvim")
+  require("lsp-format").setup {}
 
-  -- Lua Language support
+  -- Lua Language
   lspconfig.lua_ls.setup({
     capabilities = lsp_capabilities,
     on_attach = require("lsp-format").on_attach
   })
+
+
+  -- Rust Language
+  use("rust-lang/rust.vim")
+  vim.g.rustfmt_autosave = 1
+
+  use("simrat39/rust-tools.nvim")
+  local rt = require("rust-tools");
+  rt.setup({
+    tools = {
+      inlay_hints = {
+        auto = false,
+      },
+      hover_actions = {
+        auto_focus = true, -- Issue: https://github.com/simrat39/rust-tools.nvim/issues/273
+      },
+    }
+  })
+
+  -- Automatically set up your configuration after cloning packer.nvim
+  -- Put this at the end after all plugins
+  -- Ref: https://github.com/wbthomason/packer.nvim#quickstart
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)
