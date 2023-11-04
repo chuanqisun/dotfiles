@@ -38,7 +38,6 @@ local ensure_packer = function()
   end
   return false
 end
-
 local packer_bootstrap = ensure_packer()
 
 -- Refactor all plugins to be lazy loaded so Packer can install them in a single pass without missing dependency error
@@ -46,36 +45,18 @@ local packer_bootstrap = ensure_packer()
 -- PlugIn specific (Todo: move into modules)
 require("packer").startup(function(use)
   -- Package manager, must be first
-  use("wbthomason/packer.nvim")
+  use { "wbthomason/packer.nvim" }
 
   -- Commentary
-  use("terrortylor/nvim-comment")
-  require("nvim_comment").setup()
+  use { "terrortylor/nvim-comment" }
 
   -- Theme
-  use("ellisonleao/gruvbox.nvim")
-  require("gruvbox").setup({
-    contrast = "hard",
-    italic = {
-      strings = false,
-      emphasis = false,
-      comments = false,
-      operators = false,
-      folds = false,
-    },
-  })
-  vim.cmd("colorscheme gruvbox")
-  vim.opt.background = "dark" -- or "light" for light mode
+  use { "ellisonleao/gruvbox.nvim" }
+
 
   -- File explorer with fzf
-  use({ "junegunn/fzf", run = ":call fzf#install()" })
-  use({ "junegunn/fzf.vim" })
-
-  vim.api.nvim_create_user_command('OmniMenu', function()
-    vim.cmd(#vim.fn.system('git rev-parse') > 0 and 'Files' or 'GFiles')
-  end, { nargs = 0 })
-  vim.api.nvim_set_keymap('n', '<C-p>', ':OmniMenu<CR>', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', '<C-f>', ':Rg<CR>', { noremap = true, silent = true })
+  use { "junegunn/fzf", run = ":call fzf#install()" }
+  use { "junegunn/fzf.vim" }
 
   -- Copilot, lazy loaded on insert
   use {
@@ -94,115 +75,37 @@ require("packer").startup(function(use)
     "neovim/nvim-lspconfig",
   }
 
-  require("mason").setup()
-  require("mason-lspconfig").setup()
-
-
   -- Completion
-  use("hrsh7th/cmp-nvim-lsp")
-  use("hrsh7th/cmp-buffer")
-  use("hrsh7th/cmp-path")
-  use("hrsh7th/cmp-cmdline")
-  use("hrsh7th/cmp-vsnip")
-  use("hrsh7th/vim-vsnip")
-  use("hrsh7th/nvim-cmp")
-
-  -- menuone: popup even when there's only one match
-  -- noinsert: Do not insert text until a selection is made
-  -- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
-  vim.o.completeopt = "menuone,noinsert,noselect"
-
-  local cmp = require("cmp")
-
-  cmp.setup({
-    snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- Not in use, but required by author
-      end,
-    },
-    mapping = cmp.mapping.preset.insert({
-      ["<CR>"] = cmp.mapping.confirm({ select = true }),
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        else
-          fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
-        end
-      end, { "i", "s" }),
-      ["<S-Tab>"] = cmp.mapping(function()
-        if cmp.visible() then
-          cmp.select_prev_item()
-        end
-      end, { "i", "s" }),
-    }),
-    sources = cmp.config.sources({
-      { name = "nvim_lsp" },
-    }),
-  })
-
-  -- expose nvim capabilities to any LSP
-  local lspconfig = require('lspconfig')
-  local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-
-  -- Lsp keybindings
-  -- ref: https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp/
-  vim.api.nvim_create_autocmd("LspAttach", {
-    desc = "LSP actions",
-    callback = function()
-      local bufmap = function(mode, lhs, rhs)
-        local opts = { buffer = true }
-        vim.keymap.set(mode, lhs, rhs, opts)
-      end
-
-      -- Displays hover information about the symbol under the cursor
-      bufmap("n", "<C-k><C-i>", "<cmd>lua vim.lsp.buf.hover()<cr>")
-
-      -- Code actions
-      bufmap("n", "<C-k><C-a>", "<cmd>lua vim.lsp.buf.code_action()<cr>")
-
-      -- Jump to the definition
-      bufmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
-
-      -- Lists all the references
-      bufmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
-
-      -- Renames all references to the symbol under the cursor
-      bufmap("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>")
-
-      -- Move to the next diagnostic
-      bufmap("n", "<F8>", "<cmd>lua vim.diagnostic.goto_next()<cr>")
-    end,
-  })
+  use {
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-path",
+    "hrsh7th/cmp-cmdline",
+    "hrsh7th/cmp-vsnip",
+    "hrsh7th/vim-vsnip",
+    "hrsh7th/nvim-cmp",
+  }
 
   -- Auto formatting
   -- Ref: https://github.com/lukas-reineke/lsp-format.nvim
-  use("lukas-reineke/lsp-format.nvim")
-  require("lsp-format").setup {}
-
-  -- Lua Language
-  lspconfig.lua_ls.setup({
-    capabilities = lsp_capabilities,
-    on_attach = require("lsp-format").on_attach
-  })
-
+  use { "lukas-reineke/lsp-format.nvim" }
 
   -- Rust Language
-  use("rust-lang/rust.vim")
-  vim.g.rustfmt_autosave = 1
+  use { "rust-lang/rust.vim" }
+  use { "simrat39/rust-tools.nvim" }
 
-  use("simrat39/rust-tools.nvim")
-  local rt = require("rust-tools");
-  rt.setup({
-    tools = {
-      inlay_hints = {
-        auto = false,
-      },
-      hover_actions = {
-        auto_focus = true, -- Issue: https://github.com/simrat39/rust-tools.nvim/issues/273
-      },
-    }
+  require("nvim_comment").setup()
+  require("mason").setup()
+  require("mason-lspconfig").setup({
+    ensure_installed = { "lua_ls", "rust_analyzer" }
   })
+  require("lsp-format").setup()
+  require("setup-gruvbox")
+  require("setup-fzf")
+  require("setup-cmp")
+  require("setup-rust")
+  require("setup-lua") -- require lspconfig, cmp_nvim_lsp, lsp-format
+  require("setup-lsp")
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
