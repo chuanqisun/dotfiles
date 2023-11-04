@@ -27,6 +27,7 @@ vim.opt.guicursor = vim.opt.guicursor + "sm:block-blinkwait175-blinkoff150-blink
 vim.g.mapleader = " " -- Space as leader key
 vim.keymap.set("", "<space>", "<nop>", { noremap = true })
 
+
 -- Bootstrap packer
 local ensure_packer = function()
   local fn = vim.fn
@@ -40,9 +41,6 @@ local ensure_packer = function()
 end
 local packer_bootstrap = ensure_packer()
 
--- Refactor all plugins to be lazy loaded so Packer can install them in a single pass without missing dependency error
-
--- PlugIn specific (Todo: move into modules)
 require("packer").startup(function(use)
   -- Package manager, must be first
   use { "wbthomason/packer.nvim" }
