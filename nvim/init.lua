@@ -100,12 +100,12 @@ require("packer").startup(function(use)
     ensure_installed = { "lua_ls", "rust_analyzer" }
   })
   require("lsp-format").setup()
-  require("setup-gruvbox")
-  require("setup-fzf")
-  require("setup-cmp")
-  require("setup-rust")
-  require("setup-lua") -- require lspconfig, cmp_nvim_lsp, lsp-format
-  require("setup-lsp")
+  require("setups/setup-gruvbox")
+  require("setups/setup-fzf")
+  require("setups/setup-cmp")
+  require("setups/setup-rust")
+  require("setups/setup-lua") -- require lspconfig, cmp_nvim_lsp, lsp-format
+  require("setups/setup-lsp")
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
