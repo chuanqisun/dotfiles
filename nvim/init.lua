@@ -27,6 +27,29 @@ vim.opt.guicursor = vim.opt.guicursor + "sm:block-blinkwait175-blinkoff150-blink
 vim.g.mapleader = " " -- Space as leader key
 vim.keymap.set("", "<space>", "<nop>", { noremap = true })
 
+-- Alt hjkl window navigation
+vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-N><C-w>h', { noremap = true })
+vim.keymap.set({ 't', 'i' }, '<A-j>', '<C-\\><C-N><C-w>j', { noremap = true })
+vim.keymap.set({ 't', 'i' }, '<A-k>', '<C-\\><C-N><C-w>k', { noremap = true })
+vim.keymap.set({ 't', 'i' }, '<A-l>', '<C-\\><C-N><C-w>l', { noremap = true })
+vim.keymap.set('n', '<A-h>', '<C-w>h', { noremap = true })
+vim.keymap.set('n', '<A-j>', '<C-w>j', { noremap = true })
+vim.keymap.set('n', '<A-k>', '<C-w>k', { noremap = true })
+vim.keymap.set('n', '<A-l>', '<C-w>l', { noremap = true })
+
+-- Escape terminal
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
+
+-- Terminal behavior
+vim.api.nvim_create_autocmd('TermOpen', {
+  command = 'setlocal nonumber norelativenumber',
+})
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '',
+  command = 'startinsert'
+})
+
+
 
 -- Bootstrap packer
 local ensure_packer = function()
